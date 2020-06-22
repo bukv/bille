@@ -1,1 +1,1 @@
-# bille
+# Simple billiards on GO language
