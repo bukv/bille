@@ -31,6 +31,9 @@ var directionY int = 1
 
 var winningState bool = false
 
+var xPosition float64
+var yPosition float64
+
 //calculating direction coordinates using a right triangle
 func angleToXY(angle float64) (float64, float64) {
 	var x float64
@@ -72,41 +75,43 @@ func win(dc *gg.Context, holePos int) {
 	fmt.Println("VICTORY")
 }
 
-func ballMove(dc *gg.Context) {
-	var xPosition float64
-	var yPosition float64
-	var angle float64
-	var powerX float64
-	var powerY float64
-
-	//ball start position generation
+func ballStartPositionGeneration(dc *gg.Context) {
 	rand.Seed(time.Now().UnixNano())
 	xPosition = (minX + borderWidth) + rand.Float64()*((maxX+borderWidth)-(minX+borderWidth))
 	yPosition = minY + rand.Float64()*(maxY-minY)
 	ball(dc, xPosition, yPosition, red, green, blue)
-	dc.SavePNG("out.png") //start position preview
+	dc.SavePNG("images/out.png") //start position preview
+}
 
-	j := 0
-	for j < 1 {
-		fmt.Println("Enter impact force from 0 to 50:")
-		fmt.Scan(&power)
-		if power < 0 || power > maxPower {
-			fmt.Println("Wrong data. Try again.")
-		} else {
-			j = 1
-		}
-	}
+func ballMove(dc *gg.Context, angle float64) {
+	//var angle float64
+	var powerX float64
+	var powerY float64
 
-	k := 0
-	for k < 1 {
-		fmt.Println("Enter direction of impact (from 0 to 360 degrees):")
-		fmt.Scan(&angle)
-		if angle < 0 || angle > maxAngle {
-			fmt.Println("Wrong data. Try again.")
-		} else {
-			k = 1
+	ballStartPositionGeneration(dc)
+	/*
+		j := 0
+		for j < 1 {
+			fmt.Println("Enter impact force from 0 to 50:")
+			fmt.Scan(&power)
+			if power < 0 || power > maxPower {
+				fmt.Println("Wrong data. Try again.")
+			} else {
+				j = 1
+			}
 		}
-	}
+
+		k := 0
+		for k < 1 {
+			fmt.Println("Enter direction of impact (from 0 to 360 degrees):")
+			fmt.Scan(&angle)
+			if angle < 0 || angle > maxAngle {
+				fmt.Println("Wrong data. Try again.")
+			} else {
+				k = 1
+			}
+		}
+	*/
 
 	powerX, powerY = angleToXY(angle)
 

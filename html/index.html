@@ -7,7 +7,8 @@
 	<body>
         <div class="top">	
 			<div class="parameters">
-                <form action="/" method="get">
+                <button name="update" value="true" type="button" formmethod="GET">Update</button>
+                <form action="/" method="GET">
                     <label for="direction">Enter direction of impact:</label></br>
                     <input type="text" id="direction" name="direction"  placeholder="from 0 to 360 degrees"></br>
                     <label for="force">Enter impact force:</label></br>
@@ -23,7 +24,7 @@
 			</div>
         </div>
         <div class="image">
-            <img src="../out.png" width="500" height="500" alt="image">
+            <img src="images/out.png" width="500" height="500" alt="image">
         </div>
     </body>
 </html>

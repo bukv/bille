@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-	//temporary solution
-	service.ImageСreationProcess()
+	service.CreateHttpServer()
 }

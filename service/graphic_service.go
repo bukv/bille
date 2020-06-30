@@ -2,14 +2,14 @@ package service
 
 import "github.com/fogleman/gg"
 
-func ImageСreationProcess() {
+func ImageСreationProcess(angle float64) {
 	dc := gg.NewContext(1000, 1000)
 
 	table(dc)
 
-	ballMove(dc)
+	ballMove(dc, angle)
 
-	dc.SavePNG("out.png")
+	dc.SavePNG("images/out.png")
 }
 
 func hole(dc *gg.Context, xPos float64, yPos float64, red int, green int, blue int) {
