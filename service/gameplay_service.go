@@ -84,98 +84,83 @@ func ballStartPositionGeneration(dc *gg.Context) {
 }
 
 func ballMove(dc *gg.Context, angle float64) {
-	//var angle float64
 	var powerX float64
 	var powerY float64
 
 	ballStartPositionGeneration(dc)
-	/*
-		j := 0
-		for j < 1 {
-			fmt.Println("Enter impact force from 0 to 50:")
-			fmt.Scan(&power)
-			if power < 0 || power > maxPower {
-				fmt.Println("Wrong data. Try again.")
-			} else {
-				j = 1
-			}
-		}
-
-		k := 0
-		for k < 1 {
-			fmt.Println("Enter direction of impact (from 0 to 360 degrees):")
-			fmt.Scan(&angle)
-			if angle < 0 || angle > maxAngle {
-				fmt.Println("Wrong data. Try again.")
-			} else {
-				k = 1
-			}
-		}
-	*/
 
 	powerX, powerY = angleToXY(angle)
 
 	for i := 0; i < power && !winningState; i++ {
-		//next position
-		switch directionX {
-		case 1:
-			xPosition = xPosition + powerX
-			break
-		case -1:
-			xPosition = xPosition - powerX
-			break
-		}
-
-		switch directionY {
-		case 1:
-			yPosition = yPosition + powerY
-			break
-		case -1:
-			yPosition = yPosition - powerY
-			break
-		}
+		xPosition, yPosition = moveToNextPosition(powerX, powerY)
 
 		//color changing and drawing a ball
 		ballColor()
 		ball(dc, xPosition, yPosition, red, green, blue)
 
-		//check falling into the hole
-		switch {
-		case xPosition < borderWidth+2*ballRadius && yPosition < minY+2*ballRadius:
-			win(dc, 1)
-			break
+		checkFallingIntoTheHole(xPosition, yPosition, dc)
 
-		case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition < minY+2*ballRadius:
-			win(dc, 2)
-			break
+		checkingHitToWall(xPosition, yPosition, dc)
+	}
+}
 
-		case xPosition > maxX-borderWidth-2*ballRadius && yPosition < minY+2*ballRadius:
-			win(dc, 3)
-			break
-
-		case xPosition < borderWidth+2*ballRadius && yPosition > maxY-2*ballRadius:
-			win(dc, 4)
-			break
-
-		case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition > maxY-2*ballRadius:
-			win(dc, 5)
-			break
-
-		case xPosition > maxX-borderWidth-2*ballRadius && yPosition > maxY-2*ballRadius:
-			win(dc, 6)
-			break
-		}
-
-		//wall hit check
-		if xPosition > maxX-borderWidth-ballRadius || xPosition < minX+borderWidth+ballRadius {
-			directionX = directionX * -1
-			ball(dc, xPosition, yPosition, 255, 255, 0)
-		}
-
-		if yPosition > maxY-ballRadius || yPosition < minY+ballRadius {
-			directionY = directionY * -1
-			ball(dc, xPosition, yPosition, 255, 255, 0)
-		}
+func checkingHitToWall(xPosition float64, yPosition float64, dc *gg.Context) {
+	if xPosition > maxX-borderWidth-ballRadius || xPosition < minX+borderWidth+ballRadius {
+		directionX = directionX * -1
+		ball(dc, xPosition, yPosition, 255, 255, 0)
 	}
 
+	if yPosition > maxY-ballRadius || yPosition < minY+ballRadius {
+		directionY = directionY * -1
+		ball(dc, xPosition, yPosition, 255, 255, 0)
+	}
+}
+
+func checkFallingIntoTheHole(xPosition float64, yPosition float64, dc *gg.Context) {
+	switch {
+	case xPosition < borderWidth+2*ballRadius && yPosition < minY+2*ballRadius:
+		win(dc, 1)
+		break
+
+	case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition < minY+2*ballRadius:
+		win(dc, 2)
+		break
+
+	case xPosition > maxX-borderWidth-2*ballRadius && yPosition < minY+2*ballRadius:
+		win(dc, 3)
+		break
+
+	case xPosition < borderWidth+2*ballRadius && yPosition > maxY-2*ballRadius:
+		win(dc, 4)
+		break
+
+	case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition > maxY-2*ballRadius:
+		win(dc, 5)
+		break
+
+	case xPosition > maxX-borderWidth-2*ballRadius && yPosition > maxY-2*ballRadius:
+		win(dc, 6)
+		break
+	}
+}
+
+func moveToNextPosition(powerX float64, powerY float64) (float64, float64) {
+	switch directionX {
+	case 1:
+		xPosition = xPosition + powerX
+		break
+	case -1:
+		xPosition = xPosition - powerX
+		break
+	}
+
+	switch directionY {
+	case 1:
+		yPosition = yPosition + powerY
+		break
+	case -1:
+		yPosition = yPosition - powerY
+		break
+	}
+	return xPosition, yPosition
 }
