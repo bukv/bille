@@ -1,9 +1,17 @@
 package main
 
 import (
-	"bille/service"
+	"bille/game"
+
+	"github.com/fogleman/gg"
 )
 
 func main() {
-	service.CreateHttpServer()
+	dc := gg.NewContext(1000, 1000)
+
+	game.Table(dc)
+
+	game.BallMove(dc)
+
+	dc.SavePNG("out/out.png")
 }
