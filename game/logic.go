@@ -29,7 +29,6 @@ func BallMove(dc *gg.Context) {
 		}
 
 		targetHitCheck(xPosition, yPosition, dc)
-
 		wallHitCheck(xPosition, yPosition, dc)
 		if i == power*10 {
 			ball(dc, xPosition, yPosition, 255, 255, 255)
@@ -50,29 +49,29 @@ func angleToXY(angle float64) (float64, float64) {
 	return x, y
 }
 
-func win(dc *gg.Context, holePos int) {
+func win(dc *gg.Context, holeNum int) {
 	dc.DrawString("VICTORY", 500, 500)
 	dc.SetRGB255(0, 0, 0)
 	dc.Fill()
 	winningState = true
-	switch holePos {
+	switch holeNum {
 	case 1:
 		hole(dc, borderWidth, minY, 255, 128, 0)
 		break
 	case 2:
-		hole(dc, maxX/2, minY, 255, 128, 0)
+		hole(dc, (maxX+borderWidth)/2, minY, 255, 128, 0)
 		break
 	case 3:
-		hole(dc, maxX-borderWidth, minY, 255, 128, 0)
+		hole(dc, maxX, minY, 255, 128, 0)
 		break
 	case 4:
 		hole(dc, borderWidth, maxY, 255, 128, 0)
 		break
 	case 5:
-		hole(dc, maxX/2, maxY, 255, 128, 0)
+		hole(dc, (maxX+borderWidth)/2, maxY, 255, 128, 0)
 		break
 	case 6:
-		hole(dc, maxX-borderWidth, maxY, 255, 128, 0)
+		hole(dc, maxX, maxY, 255, 128, 0)
 		break
 	}
 	fmt.Println("VICTORY")
@@ -80,25 +79,25 @@ func win(dc *gg.Context, holePos int) {
 
 func dialogCLI() float64 {
 	var angle float64
-	j := 0
-	for j < 1 {
+	j := true
+	for j {
 		fmt.Println("Enter impact force from 1 to 255:")
 		fmt.Scan(&power)
 		if power < 1 || power > maxPower {
 			fmt.Println("Wrong data. Try again.")
 		} else {
-			j = 1
+			j = false
 		}
 	}
 
-	k := 0
-	for k < 1 {
+	k := true
+	for k {
 		fmt.Println("Enter direction of impact (from 0 to 360 degrees):")
 		fmt.Scan(&angle)
 		if angle < 0 || angle > maxAngle {
 			fmt.Println("Wrong data. Try again.")
 		} else {
-			k = 1
+			k = false
 		}
 	}
 	return angle
@@ -138,34 +137,34 @@ func moveOneStep(xPosition float64, yPosition float64, powerX float64, powerY fl
 
 func targetHitCheck(xPosition float64, yPosition float64, dc *gg.Context) {
 	switch {
-	case xPosition < borderWidth+2*ballRadius && yPosition < minY+2*ballRadius:
+	case xPosition < minX+2*ballRadius && yPosition < minY+2*ballRadius:
 		win(dc, 1)
 		break
 
-	case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition < minY+2*ballRadius:
+	case xPosition > (maxX+borderWidth)/2-2*ballRadius && xPosition < (maxX+borderWidth)/2+2*ballRadius && yPosition < minY+2*ballRadius:
 		win(dc, 2)
 		break
 
-	case xPosition > maxX-borderWidth-2*ballRadius && yPosition < minY+2*ballRadius:
+	case xPosition > maxX-2*ballRadius && yPosition < minY+2*ballRadius:
 		win(dc, 3)
 		break
 
-	case xPosition < borderWidth+2*ballRadius && yPosition > maxY-2*ballRadius:
+	case xPosition < minX+2*ballRadius && yPosition > maxY-2*ballRadius:
 		win(dc, 4)
 		break
 
-	case xPosition > maxX/2-2*ballRadius && xPosition < maxX/2+2*ballRadius && yPosition > maxY-2*ballRadius:
+	case xPosition > (maxX+borderWidth)/2-2*ballRadius && xPosition < (maxX+borderWidth)/2+2*ballRadius && yPosition > maxY-2*ballRadius:
 		win(dc, 5)
 		break
 
-	case xPosition > maxX-borderWidth-2*ballRadius && yPosition > maxY-2*ballRadius:
+	case xPosition > maxX-2*ballRadius && yPosition > maxY-2*ballRadius:
 		win(dc, 6)
 		break
 	}
 }
 
 func wallHitCheck(xPosition float64, yPosition float64, dc *gg.Context) {
-	if xPosition > maxX-borderWidth-ballRadius || xPosition < minX+borderWidth+ballRadius {
+	if xPosition > maxX-ballRadius || xPosition < minX+ballRadius {
 		directionX = directionX * -1
 		ball(dc, xPosition, yPosition, 255, 255, 0)
 	}
