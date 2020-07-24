@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  	<head>
+		<meta charset="utf-8">
+		<title>Simple billiards</title>
+	</head>
+	<body>
+        <div class="top">	
+			<div class="parameters">
+                <button name="update" value="true" type="button" formmethod="GET">Update</button>
+                <form action="/" method="GET">
+                    <label for="direction">Enter direction of impact:</label></br>
+                    <input type="text" id="direction" name="direction"  placeholder="from 0 to 360 degrees"></br>
+                    <label for="force">Enter impact force:</label></br>
+                    <input type="radio" name="force" value="10" name="force">
+                    <input type="radio" name="force" value="20" name="force">
+                    <input type="radio" name="force" value="30" name="force">
+                    <input type="radio" name="force" value="40" name="force">
+                    <input type="radio" name="force" value="50" name="force"></br>
+                    <label for="force">← weakly | strongly →</label></br>
+					<input type="submit" value="Go!">
+                
+                </form>
+			</div>
+        </div>
+        <div class="image">
+            <img src="images/out.png" width="500" height="500" alt="image">
+        </div>
+    </body>
+</html>
